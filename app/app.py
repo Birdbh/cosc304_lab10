@@ -28,7 +28,7 @@ def home():
 
     products = query.all()
     return render_template(
-        'home.html',
+        'index.html',
         search_form=search_form,
         category_form=category_form,
         products=products,
