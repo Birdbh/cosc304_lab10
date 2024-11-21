@@ -11,7 +11,7 @@
         <p>{{ product.description }}</p>
         <form action="{{ url_for('add_to_cart') }}" method="post">
             {{ form.hidden_tag() }}
-            {{ form.product_id(value=product.id) }}
+            <input type="hidden" name="product_id" value="{{ product.id }}" readonly>
             <div>
                 {{ form.quantity.label }}: {{ form.quantity(class="form-control") }}
             </div>

@@ -29,9 +29,9 @@ with app.app_context():
 
     # Add products
     db.session.add_all([
-        Product(name="Smartphone", price=699.99, image="smartphone.jpg", category_id=electronics.id, sales_count=50, warehouse_id=warehouse1.id),
-        Product(name="Laptop", price=1299.99, image="laptop.jpg", category_id=electronics.id, sales_count=30, warehouse_id=warehouse1.id),
-        Product(name="T-Shirt", price=19.99, image="tshirt.jpg", category_id=fashion.id, sales_count=70, warehouse_id=warehouse2.id),
+        Product(name="Smartphone", price=699.99, image="smartphone.jpg", category_id=electronics.id, sales_count=50, warehouse_id=warehouse1.id, description="A very nice smartphone"),
+        Product(name="Laptop", price=1299.99, image="laptop.jpg", category_id=electronics.id, sales_count=30, warehouse_id=warehouse1.id, description="A very nice laptop"),
+        Product(name="T-Shirt", price=19.99, image="tshirt.jpg", category_id=fashion.id, sales_count=70, warehouse_id=warehouse2.id, description="A very nice t-shirt"),
     ])
     db.session.commit()
 

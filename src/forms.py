@@ -65,6 +65,7 @@ class ProductForm(FlaskForm):
     price = FloatField('Price', validators=[DataRequired(), NumberRange(min=0)])
     category_id = SelectField('Category', coerce=int, validators=[DataRequired()])
     warehouse_id = SelectField('Warehouse', coerce=int, validators=[DataRequired()])
+    description = TextAreaField('Description')
     image = FileField('Product Image')
     submit = SubmitField('Save')
 

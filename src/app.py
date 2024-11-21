@@ -399,7 +399,7 @@ def admin_add_product():
         if form.image.data:
             filename = secure_filename(form.image.data.filename)
             form.image.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        product = Product(name=form.name.data, price=form.price.data, category_id=form.category_id.data, warehouse_id=form.warehouse_id.data, image=filename)
+        product = Product(name=form.name.data, price=form.price.data, category_id=form.category_id.data, warehouse_id=form.warehouse_id.data, image=filename, description=form.description.data)
         db.session.add(product)
         db.session.commit()
         flash('Product added successfully!')
