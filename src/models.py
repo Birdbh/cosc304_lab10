@@ -74,11 +74,11 @@ class Product(db.Model):
     warehouse = db.relationship('Warehouse', backref=db.backref('products', lazy=True))
     category = db.relationship('Category', backref=db.backref('products', lazy=True))
 
-    @validates('inventory')
-    def validate_inventory(self, key, value):
-        if value < 0:
-            raise ValueError("Inventory cannot be negative")
-        return value
+    # @validates('inventory')
+    # def validate_inventory(self, key, value):
+    #     if value < 0:
+    #         raise ValueError("Inventory cannot be negative")
+    #     return value
 
 class Shipment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -89,9 +89,9 @@ class Shipment(db.Model):
 
     order = db.relationship('Order', backref=db.backref('shipments', lazy=True))
 
-# Register event listeners
-@event.listens_for(Product, 'before_insert')
-@event.listens_for(Product, 'before_update')
-def validate_product(mapper, connection, target):
-    if target.inventory < 0:
-        raise ValueError("Inventory cannot be negative")
+# # Register event listeners
+# @event.listens_for(Product, 'before_insert')
+# @event.listens_for(Product, 'before_update')
+# def validate_product(mapper, connection, target):
+#     if target.inventory < 0:
+#         raise ValueError("Inventory cannot be negative")

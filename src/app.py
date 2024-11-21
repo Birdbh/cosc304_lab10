@@ -49,7 +49,7 @@ def view_cart():
     cart_items = Cart.query.filter_by(user_id=user.id).all()
     total = sum(item.product.price * item.quantity for item in cart_items)
 
-    return render_template('cart.html', cart_items=cart_items, total=total, update_form=UpdateCartForm(), remove_form=RemoveFromCartForm(), order_form=OrderForm())
+    return render_template('cart.html', cart_items=cart_items, total=total, update_form=UpdateCartForm(), remove_form=RemoveFromCartForm(), order_form=OrderForm(), user=session.get('username', 'Guest'))
 
 @app.route('/cart/add', methods=['POST'])
 def add_to_cart():
@@ -127,7 +127,7 @@ def register():
         flash('Registration successful! Please log in.')
         return redirect(url_for('login'))
     
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, user=session.get('username', 'Guest'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -147,7 +147,7 @@ def login():
         else:
             flash('Invalid email or password.')
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, user=session.get('username', 'Guest'))
 
 @app.route('/logout')
 def logout():
@@ -173,7 +173,7 @@ def edit_profile():
         flash('Profile updated successfully.')
         return redirect(url_for('home'))
 
-    return render_template('profile.html', form=form)
+    return render_template('profile.html', form=form, user=session.get('username', 'Guest'))
 
 @app.route('/order', methods=['POST'])
 def place_order():
@@ -267,7 +267,7 @@ def checkout():
     taxes = total_price * tax_rate
     total_cost = total_price + taxes + shipping_cost
 
-    return render_template('checkout.html', form=form, cart_items=cart_items, total_price=total_price, taxes=taxes, shipping_cost=shipping_cost, total_cost=total_cost)
+    return render_template('checkout.html', form=form, cart_items=cart_items, total_price=total_price, taxes=taxes, shipping_cost=shipping_cost, total_cost=total_cost, user=session.get('username', 'Guest'))
 
 @app.route('/orders')
 def view_orders():
@@ -276,14 +276,14 @@ def view_orders():
 
     user = User.query.get(session['user_id'])
     orders = user.orders
-    return render_template('orders.html', orders=orders)
+    return render_template('orders.html', orders=orders, user=session.get('username', 'Guest'))
 
 @app.route('/product/<int:product_id>')
 def view_product(product_id):
     product = Product.query.get_or_404(product_id)
 
     form = AddToCartForm()
-    return render_template('product.html', product=product, form=form, review_form=ReviewForm())
+    return render_template('product.html', product=product, form=form, review_form=ReviewForm(), user=session.get('username', 'Guest'))
 
 @app.route('/review/add/<int:product_id>', methods=['POST'])
 def add_review(product_id):
@@ -332,13 +332,13 @@ def admin_required(f):
 @app.route('/admin')
 @admin_required
 def admin_dashboard():
-    return render_template('admin/dashboard.html')
+    return render_template('admin/dashboard.html', user=session.get('username', 'Guest'))
 
 @app.route('/admin/customers')
 @admin_required
 def admin_customers():
     customers = User.query.all()
-    return render_template('admin/customers.html', customers=customers)
+    return render_template('admin/customers.html', customers=customers, user=session.get('username', 'Guest'))
 
 @app.route('/admin/add_customer', methods=['GET', 'POST'])
 @admin_required
@@ -355,7 +355,7 @@ def admin_add_customer():
         flash('Customer added succesfuly')
         return redirect(url_for('admin_customers'))
     
-    return render_template('admin/add_customer.html', form=form)
+    return render_template('admin/add_customer.html', form=form, user=session.get('username', 'Guest'))
 
 @app.route('/admin/update_customer', methods=['GET', 'POST'])
 @admin_required
@@ -379,14 +379,14 @@ def admin_update_customer():
             flash('Customer updated successfully!')
             return redirect(url_for('admin_update_customer'))
 
-    return render_template('admin/update_customer.html', customers=customers, form=form, selected_customer=selected_customer, selected_customer_id=selected_customer_id)
+    return render_template('admin/update_customer.html', customers=customers, form=form, selected_customer=selected_customer, selected_customer_id=selected_customer_id, user=session.get('username', 'Guest'))
 
 @app.route('/admin/sales_report')
 @admin_required
 def admin_sales_report():
     orders = Order.query.all()
     total_sales = sum(order.total_price for order in orders)
-    return render_template('admin/sales_report.html', orders=orders, total_sales=total_sales)
+    return render_template('admin/sales_report.html', orders=orders, total_sales=total_sales, user=session.get('username', 'Guest'))
 
 @app.route('/admin/add_product', methods=['GET', 'POST'])
 @admin_required
@@ -404,7 +404,7 @@ def admin_add_product():
         db.session.commit()
         flash('Product added successfully!')
         return redirect(url_for('admin_dashboard'))
-    return render_template('admin/add_product.html', form=form)
+    return render_template('admin/add_product.html', form=form, user=session.get('username', 'Guest'))
 
 @app.route('/admin/update_product/<int:product_id>', methods=['GET', 'POST'])
 @admin_required
@@ -425,7 +425,7 @@ def admin_update_product(product_id):
         db.session.commit()
         flash('Product updated successfully!')
         return redirect(url_for('admin_dashboard'))
-    return render_template('admin/update_product.html', form=form, product=product)
+    return render_template('admin/update_product.html', form=form, product=product, user=session.get('username', 'Guest'))
 
 @app.route('/admin/delete_product/<int:product_id>', methods=['GET','POST'])
 @admin_required
@@ -446,7 +446,7 @@ def admin_update_order(order_id):
         db.session.commit()
         flash('Order status updated successfully!')
         return redirect(url_for('admin_dashboard'))
-    return render_template('admin/update_order.html', form=form, order=order)
+    return render_template('admin/update_order.html', form=form, order=order, user=session.get('username', 'Guest'))
 
 @app.route('/admin/add_warehouse', methods=['GET', 'POST'])
 @admin_required
@@ -458,7 +458,7 @@ def admin_add_warehouse():
         db.session.commit()
         flash('Warehouse added successfully!')
         return redirect(url_for('admin_dashboard'))
-    return render_template('admin/add_warehouse.html', form=form)
+    return render_template('admin/add_warehouse.html', form=form, user=session.get('username', 'Guest'))
 
 @app.route('/admin/update_warehouse', methods=['GET', 'POST'])
 @admin_required
@@ -478,7 +478,7 @@ def admin_update_warehouse():
             flash('Warehouse updated successfully!')
             return redirect(url_for('admin_update_warehouse'))
 
-    return render_template('admin/update_warehouse.html', warehouses=warehouses, form=form, selected_warehouse=selected_warehouse, selected_warehouse_id=selected_warehouse_id)
+    return render_template('admin/update_warehouse.html', warehouses=warehouses, form=form, selected_warehouse=selected_warehouse, selected_warehouse_id=selected_warehouse_id, user=session.get('username', 'Guest'))
 
 import subprocess
 
@@ -519,7 +519,7 @@ def admin_update_inventory():
         else:
             print(form.errors)
 
-    return render_template('admin/update_inventory.html', warehouses=warehouses, form=form, selected_warehouse=selected_warehouse, selected_warehouse_id=selected_warehouse_id)
+    return render_template('admin/update_inventory.html', warehouses=warehouses, form=form, selected_warehouse=selected_warehouse, selected_warehouse_id=selected_warehouse_id, user=session.get('username', 'Guest'))
 
 if __name__ == '__main__':
     with app.app_context():
