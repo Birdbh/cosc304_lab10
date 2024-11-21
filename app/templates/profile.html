@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Profile</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.username.label }}: {{ form.username }}</p>
+    <p>{{ form.email.label }}: {{ form.email }}</p>
+    <p>{{ form.address.label }}: {{ form.address }}</p>
+    <p>{{ form.password.label }}: {{ form.password }}</p>
+    <p>{{ form.confirm.label }}: {{ form.confirm }}</p>
+    <p>{{ form.submit }}</p>
+</form>
+
+<a href="{{ url_for('view_orders') }}" class="btn btn-primary">View Past Orders</a>
+{% endblock %}

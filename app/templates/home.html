@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome to the Web Store</h1>
+
+<!-- Search Form -->
+<form method="POST">
+    {{ search_form.hidden_tag() }}
+    {{ search_form.query.label }}: {{ search_form.query }} {{ search_form.submit }}
+</form>
+
+<!-- Category Filter -->
+<form method="POST">
+    {{ category_form.hidden_tag() }}
+    {{ category_form.category.label }}: {{ category_form.category }} {{ category_form.submit }}
+</form>
+
+<!-- Top Products -->
+<h2>Top Products</h2>
+<div class="products">
+    {% for product in top_products %}
+    <div class="product">
+        <a href="{{ url_for('view_product', product_id=product.id) }}">
+            <div style="max-width: 200px; max-height: 200px; overflow: hidden;">
+                <img src="{{ url_for('static', filename='images/' ~ product.image) }}" alt="{{ product.name }}"
+                    style="width: 100%; height: auto;">
+            </div>
+        </a>
+        <p>{{ product.name }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Product List -->
+<h2>Products</h2>
+<div class="products">
+    {% for product in products %}
+    <div class="product">
+        <a href="{{ url_for('view_product', product_id=product.id) }}">
+            <div style="max-width: 200px; max-height: 200px; overflow: hidden;">
+                <img src="{{ url_for('static', filename='images/' ~ product.image) }}" alt="{{ product.name }}"
+                    style="width: 100%; height: auto;">
+            </div>
+        </a>
+        <p>{{ product.name }} - ${{ product.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

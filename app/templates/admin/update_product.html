@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Update Product</h1>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>{{ form.name.label }}: {{ form.name }}</p>
+    <p>{{ form.price.label }}: {{ form.price }}</p>
+    <p>{{ form.category_id.label }}: {{ form.category_id }}</p>
+    <p>{{ form.warehouse_id.label }}: {{ form.warehouse_id }}</p>
+    <p>{{ form.image.label }}: {{ form.image }}</p>
+    <p>{{ form.submit }}</p>
+</form>
+{% endblock %}

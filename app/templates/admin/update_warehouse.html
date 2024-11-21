@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Update Warehouse</h1>
+
+<form method="GET" action="{{ url_for('admin_update_warehouse') }}">
+    <label for="warehouse">Select Warehouse:</label>
+    <select name="warehouse_id" id="warehouse">
+        {% for warehouse in warehouses %}
+        <option value="{{ warehouse.id }}" {% if warehouse.id==selected_warehouse_id %}selected{% endif %}>{{
+            warehouse.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Select</button>
+</form>
+
+{% if selected_warehouse %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.name.label }}: {{ form.name }}</p>
+    <p>{{ form.address.label }}: {{ form.address }}</p>
+    <p>{{ form.submit }}</p>
+</form>
+{% endif %}
+{% endblock %}

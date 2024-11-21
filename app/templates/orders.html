@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Your Orders</h1>
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>Date</th>
+        <th>Total</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.timestamp.strftime('%Y-%m-%d') }}</td>
+        <td>${{ order.total_price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

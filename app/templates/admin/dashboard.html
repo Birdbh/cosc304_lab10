@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<ul>
+    <li><a href="{{ url_for('admin_customers') }}">List All Customers</a></li>
+    <li><a href="{{ url_for('admin_update_customer') }}">Update Customer</a></li>
+    <li><a href="{{ url_for('admin_add_customer') }}">Add New Customer</a></li>
+    <li><a href="{{ url_for('admin_sales_report') }}">Sales Report</a></li>
+    <li><a href="{{ url_for('admin_add_product') }}">Add New Product</a></li>
+    <li><a href="{{ url_for('admin_add_warehouse') }}">Add New Warehouse</a></li>
+    <li><a href="{{ url_for('admin_update_warehouse') }}">Update Warehouse</a></li>
+</ul>
+
+<form action="{{ url_for('restore_database') }}" method="post" style="margin-top: 20px;">
+    <button type="submit" class="btn btn-danger">Restore Database</button>
+</form>
+{% endblock %}

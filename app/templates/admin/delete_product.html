@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Delete Product</h1>
+<p>Are you sure you want to delete the product "{{ product.name }}"?</p>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

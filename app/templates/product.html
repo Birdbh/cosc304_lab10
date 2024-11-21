@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ product.name }}</h1>
+<div class="product-details">
+    <div style="max-width: 200px; max-height: 200px; overflow: hidden;">
+        <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}"
+            style="width: 100%; height: auto;">
+    </div>
+    <div class="product-info">
+        <h2>Price: ${{ product.price }}</h2>
+        <p>{{ product.description }}</p>
+        <form action="{{ url_for('add_to_cart') }}" method="post">
+            {{ form.hidden_tag() }}
+            {{ form.product_id(value=product.id) }}
+            <div>
+                {{ form.quantity.label }}: {{ form.quantity(class="form-control") }}
+            </div>
+            <div>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+        {% if session.get('is_admin') %}
+        <a href="{{ url_for('admin_update_product', product_id=product.id) }}" class="btn btn-warning">Update Product</a>
+        {% endif %}
+        {% if session.get('is_admin') %}
+        <a href="{{ url_for('admin_delete_product', product_id=product.id) }}" class="btn btn-warning">Delete Product</a>
+        {% endif %}
+    </div>
+</div>
+<h2>Reviews</h2>
+<div class="reviews">
+    {% for review in product.reviews %}
+    <div class="review">
+        <p><strong>{{ review.user.username }}</strong> rated {{ review.rating }} stars</p>
+        <p>{{ review.comment }}</p>
+        <p><small>{{ review.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small></p>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not user_has_reviewed %}
+<h2>Leave a Review</h2>
+<form action="{{ url_for('add_review', product_id=product.id) }}" method="post">
+    {{ review_form.hidden_tag() }}
+    <div>
+        {{ review_form.rating.label }}: {{ review_form.rating(class="form-control") }}
+    </div>
+    <div>
+        {{ review_form.comment.label }}: {{ review_form.comment(class="form-control") }}
+    </div>
+    <div>
+        {{ review_form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+{% endif %}
+{% endblock %}

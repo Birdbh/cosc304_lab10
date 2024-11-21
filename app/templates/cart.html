@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Your Cart</h1>
+<div class="cart-items">
+    {% for item in cart_items %}
+    <div class="cart-item">
+        <div style="max-width: 200px; max-height: 200px; overflow: hidden;">
+            <img src="{{ url_for('static', filename='images/' + item.product.image) }}" alt="{{ item.product.name }}"
+                style="width: 100%; height: auto;">
+        </div>
+        <div class="cart-info">
+            <h2>{{ item.product.name }}</h2>
+            <p>Price: ${{ item.product.price }}</p>
+            <p>Total: ${{ item.product.price * item.quantity }}</p>
+            <form action="{{ url_for('update_cart')}}" method="post">
+                {{ update_form.hidden_tag() }}
+                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                {{ update_form.quantity.label }}: {{ update_form.quantity(class="form-control", value=item.quantity) }}
+                {{ update_form.submit(class="btn btn-primary") }}
+            </form>
+            <form action="{{ url_for('remove_from_cart') }}" method="post">
+                {{ remove_form.hidden_tag() }}
+                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                {{ remove_form.submit(class="btn btn-danger") }}
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<h2>Total: ${{ total }}</h2>
+<form action="{{ url_for('checkout') }}" method="post">
+    {{ order_form.hidden_tag() }}
+    {{ order_form.submit(class="btn btn-success") }}
+</form>
+{% endblock %}

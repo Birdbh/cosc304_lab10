@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Update Order Status</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.status.label }}: {{ form.status }}</p>
+    <p>{{ form.submit }}</p>
+</form>
+{% endblock %}

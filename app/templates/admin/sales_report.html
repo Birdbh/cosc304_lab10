@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<h1>Sales Report</h1>
+<p>Total Sales: ${{ total_sales }}</p>
+<canvas id="salesChart" width="400" height="200"></canvas>
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>User</th>
+        <th>Total Price</th>
+        <th>Timestamp</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>${{ order.total_price }}</td>
+        <td>{{ order.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<canvas id="salesChart"></canvas>
+
+<script>
+    // Convert `orders` timestamps and total prices into JSON-compatible arrays
+    const salesLabels = [
+        {% for order in orders %}
+        "{{ order.timestamp }}"{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    ];
+    const salesData = [
+        {% for order in orders %}
+        {{ order.total_price }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    ];
+
+    // Format the timestamps to 'YYYY-MM-DD' using JavaScript
+    const formattedLabels = salesLabels.map(timestamp => {
+        const date = new Date(timestamp);
+        return date.toISOString().split('T')[0];
+    });
+</script>
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Initialize the chart using the data prepared above
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const chartData = {
+        labels: salesLabels,
+        datasets: [{
+            label: 'Total Sales',
+            data: salesData,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+    const salesChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+
+
+{% endblock %}

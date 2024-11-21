@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Checkout</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.payment_info.label }}: {{ form.payment_info(class="form-control") }}
+    </div>
+    <div>
+        {{ form.shipping_address.label }}: {{ form.shipping_address(class="form-control") }}
+    </div>
+    <div>
+        {{ form.shipping_method.label }}: {{ form.shipping_method(class="form-control") }}
+    </div>
+    <div>
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+
+<h2>Order Summary</h2>
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+    {% for item in cart_items %}
+    <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.product.price }}</td>
+        <td>${{ item.product.price * item.quantity }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>Total Price: ${{ total_price }}</p>
+<p>Taxes: ${{ taxes }}</p>
+<p>Shipping Cost: ${{ shipping_cost }}</p>
+<h3>Total Cost: ${{ total_cost }}</h3>
+
+{% endblock %}
