@@ -71,7 +71,6 @@ Welcome to the E-Commerce Web Application! This project is a fully functional e-
 │   ├── restoreDatabase.py  # Script to restore the database
 │   ├── templates/          # HTML templates
 │   └── static/             # Static files (CSS, JS, images)
-├── migrations/             # Database migrations
 ├── requirements.txt        # Python dependencies
 └── README.md               # Project README
 
